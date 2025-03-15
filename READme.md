@@ -22,44 +22,39 @@ To get started with the simulator, follow these steps:
 Clone the Repository:
 
 ```bash
-Copy
-Edit
 git clone https://github.com/sibster146/Machine_Learning_Trader_advance.git
 cd Machine_Learning_Trader_advance
 ```
-Set Up a Virtual Environment:
 
-bash
-Copy
-Edit
+Set Up a Virtual Environment:
+```bash
 python -m venv env
 source env/bin/activate  # On Windows: env\Scripts\activate
+```
+
 Install Dependencies:
-
-bash
-Copy
-Edit
+```bash
 pip install -r requirements.txt
-Configure API Access:
+```
 
+Configure API Access:
 Obtain your API credentials from the desired exchange or data provider.​
-Set up your API credentials in the configuration file or as environment variables.​
+Set up your API credentials in the configuration file or as environment variables in `websocket.py`.
 
 ## Usage
 Prepare Your Machine Learning Model:
 
 Train your classifier using historical market data.​
-Ensure the model outputs clear buy (1) and sell (0) signals.​
+Ensure the model outputs clear buy (1) and don't buy (0) signals.​
 Integrate Your Model:
 
-Place your trained model file in the models/ directory.​
-Update the model.py script to load and utilize your model.​
-Run the Simulator:
+Place your trained model file into the root directory.​
+Update the `model.py` script to load and utilize your model.​
 
-bash
-Copy
-Edit
+Run the Simulator:
+```bash
 python main.py
+```
 The simulator will fetch real-time data, generate predictions, execute simulated trades, and log the results.​
 
 ## Simulator Architecture
