@@ -79,7 +79,7 @@ I am choosing to train an XGBoost model. After training, I look into the probabi
 
 Letting my model run, here is the PnL
 
-![Simulation 1](simulations/simulation_2.png)
+![Simulation 2](simulations/simulator_2.png)
 
 Contributing
 Contributions to enhance the simulator's functionality are welcomed. Please fork the repository and submit a pull request with your proposed changes.
