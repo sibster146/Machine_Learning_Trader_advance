@@ -5,7 +5,7 @@
 - [Installation](#installation)
 - [Usage](#usage)
 - [Simulator Architecture](#simulator-architecture)
-- [Research and Development](#research-and-development)
+- [Research and Development](#personal-research-and-development)
 - [Contributing](#contributing)
 
 ## Introduction
