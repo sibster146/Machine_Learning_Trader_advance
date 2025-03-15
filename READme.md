@@ -9,26 +9,24 @@
 - [Contributing](#contributing)
 
 ## Introduction
-Welcome to the Machine Learning Trader Advanced repository! This project builds upon foundational concepts in algorithmic trading by integrating advanced machine learning techniques to develop and evaluate trading strategies for various financial instruments, including stocks and cryptocurrencies. The simulator is designed to be adaptable, allowing for application across different exchanges and asset classes.
+Welcome to the Machine Learning Trader Advanced repository! This project builds upon foundational concepts in algorithmic trading by integrating machine learning techniques to develop and evaluate trading strategies for various financial instruments, including stocks and cryptocurrencies. The simulator is designed to be adaptable, allowing for application across different exchanges and asset classes. If you have not read through Machine Learning Trader (Simple), please read that before continuing here.
 
 ## Features
-Advanced Machine Learning Models: Incorporates sophisticated algorithms such as XGBoost classifiers for enhanced prediction accuracy.​
-github.com
-Real-Time Market Data Integration: Utilizes APIs to fetch live market data, enabling timely decision-making.​
-Model Deployment: Allows users to integrate their machine learning classifiers to generate trading signals.​
-Simulated Order Execution: Mimics the execution of buy and sell orders based on model predictions without actual financial risk.​
-Performance Tracking: Records each simulated trade to assess the model's effectiveness over time.​
+Machine Learning Models: Can plug and play with different machine learning models to evaluate performance of different techniques.  
+Real-Time Market Data Integration: Utilizes APIs to fetch live market data, enabling live paper trading.   
+Performance Tracking: Records each simulated trade to assess the model's effectiveness.  
 
 ## Installation
 To get started with the simulator, follow these steps:
 
 Clone the Repository:
 
-bash
+```bash
 Copy
 Edit
 git clone https://github.com/sibster146/Machine_Learning_Trader_advance.git
 cd Machine_Learning_Trader_advance
+```
 Set Up a Virtual Environment:
 
 bash
