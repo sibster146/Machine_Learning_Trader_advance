@@ -72,14 +72,18 @@ The personal research and development I have done can be found in `research.py`.
 Feature vectors are engineered in `time_independent_features()` and `time_dependent_features()`. I focused on several factors related to market depth, volume, vwap, and price. 
 
 Target feature is engineered in `create_time_lag()` and `create_gain_binary()`. `create_time_lag()` shifts the bid market depth column up by n rows. `create_gain_binary()` compares the "Ask Market Depth" value and the "Bid Market Depth Time Lag n" value. If 
-"Ask Market Depth" value > "Bid Market Depth Time Lag n", 1 else 0. After the dataset in created, we train a model
+"Ask Market Depth" value > "Bid Market Depth Time Lag n", 1 else 0. After the dataset in created, we train a model.
 
 We do not include all columns in training. The feature vectors are found in `feature_columns` and the target vector is found in `target_gain`.
-I am choosing to train an XGBoost model. After training, I look into the probability breakdown of `X_test`. I find that the best confidence limit is around 0.8 because most ground truth falses are captured under 0.8. In this environment, the most important factor to limit is false positives. Most false positives are under the probility of 0.8. While a 0.8 confirence limit also introduces high levels of false negatives, we have less concern for false negatives because a negative probability means we do not buy, so we do not exposure our position for loss. A false positive exposes us to loss. We want to limit false positives, maximize true positives, and 0.8 seems like a good limit.
+I am choosing to train an XGBoost model. After training, I look into the probability breakdown of `X_test`. I find that the best confidence limit is around 0.8 because most ground truth falses are captured under 0.56. In this environment, the most important factor to limit is false positives. Most false positives are under the probility of 0.56. While a 0.56 confirence limit also introduces high levels of false negatives, we have less concern for false negatives because a negative probability means we do not buy, so we do not exposure our position for loss. A false positive exposes us to loss. We want to limit false positives, maximize true positives, and 0.8 seems like a good limit.
 
-Letting my model run, here is the PnL
-
-![Simulation 2](simulations/simulator_2.png)
+Letting my model run, here is the PnL  
+  
+simulation_1_3_update_lag_xgbclassifier2.pkl
+![Simulation 1](simulation_graphs/simulation_1_3_update_lag_xgbclassifier2.pkl.csv.png)  
+  
+simulation_2_3_update_lag_xgbclassifier2.pkl  
+![Simulation 2](simulation_graphs/simulation_2_3_update_lag_xgbclassifier2.pkl.csv.png) 
 
 Contributing
 Contributions to enhance the simulator's functionality are welcomed. Please fork the repository and submit a pull request with your proposed changes.

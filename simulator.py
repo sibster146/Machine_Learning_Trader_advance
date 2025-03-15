@@ -18,12 +18,10 @@ class Simulator:
         self.orderbook = OrderBook()
         self.websocket_updates_queue = Queue() # updates from exchange
         self.completed_trades_queue = Queue() 
-        self.price_level_queue = Queue()
         self.exposure = deque() 
         self.websocket = WebSocket(self.websocket_updates_queue)
         self.process_websocket_updates_queue_thread = threading.Thread(target=self.process_websocket_updates_queue)
         self.process_completed_trades_queue_thread = threading.Thread(target = self.process_completed_trades_queue)
-        self.process_price_level_thread = threading.Thread(target = self.process_price_level_queue)
 
         self.completed_trades_filename = f"simulations/{simulation_run}.csv"
         
@@ -33,7 +31,6 @@ class Simulator:
         print("starting application")
         self.process_websocket_updates_queue_thread.start()
         self.process_completed_trades_queue_thread.start()
-        self.process_price_level_thread.start()
         self.websocket.open_socket(self.symbol)
 
     def stop(self):
@@ -42,11 +39,9 @@ class Simulator:
 
         self.websocket_updates_queue.put(None)
         self.completed_trades_queue.put(None)
-        self.price_level_queue.put(None)
 
         self.process_websocket_updates_queue_thread.join()
         self.process_completed_trades_queue_thread.join()
-        self.price_level_queue.join()
 
     def process_completed_trades_queue(self):
             
@@ -67,46 +62,6 @@ class Simulator:
                 writer.writerow(values)
 
             self.completed_trades_queue.task_done()
-
-
-    def process_price_level_queue(self):
-        while True:
-            data = self.price_level_queue.get()
-            if not data:
-                return
-            bids, asks, timestamp, sequence_number = data
-            if not os.path.exists(self.price_level_filename):
-                price_level_num = len(bids)
-                column_names = []
-                column_names.append("Sequence Number")
-                for i in range(price_level_num):
-                    column_names.append(f"Bid Price Level {i+1}")
-                    column_names.append(f"Bid Volume Level {i+1}")
-                for i in range(price_level_num):
-                    column_names.append(f"Ask Price Level {i+1}")
-                    column_names.append(f"Ask Volume Level {i+1}")
-                column_names.append("Timestamp")
-                with open(self.price_level_filename, 'w', newline='') as csvfile:
-                    writer = csv.writer(csvfile)
-                    writer.writerow(column_names)
-
-            values = []
-            values.append(sequence_number)
-            for i in range(len(bids)):
-                values.append(bids[i][0])
-                values.append(bids[i][1])
-            for i in range(len(asks)):
-                values.append(asks[i][0])
-                values.append(asks[i][1])
-            values.append(timestamp)
-
-            with open(self.price_level_filename, 'a', newline='') as csvfile:
-                writer = csv.writer(csvfile)
-                writer.writerow(values)
-
-            self.price_level_queue.task_done()
-
-
 
 
     def process_msg(self, msg_json):
@@ -133,7 +88,6 @@ class Simulator:
 
                 bids, asks = self.orderbook.get_n_level_bids_asks(self.binary_classifier.price_level_num)
                 timestamp_str = msg_json["timestamp"]
-                self.price_level_queue.put((bids,asks,timestamp_str, sequence_number))
                 up = self.binary_classifier.create_inference_vector(bids, asks, timestamp_str)
 
                 if up:

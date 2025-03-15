@@ -34,78 +34,71 @@ class BinaryClassifier:
 
         inf_df = self.time_independent_features(inf_df, self.price_level_num, self.buy_amount)
 
-        inf_df = self.time_dependent_features(inf_df, [1,2,5,10], self.buy_amount)
+        column_name = "Mid Price"
+
+        inf_df = self.time_dependent_features(inf_df, [1,2,5,10], self.buy_amount, column_name)
 
         feature_columns = [
-            'Bid Price Level 1', 'Bid Volume Level 1',
-            'Bid Price Level 2', 'Bid Volume Level 2', 
-            'Bid Price Level 3', 'Bid Volume Level 3', 
-            # 'Bid Price Level 4', 'Bid Volume Level 4',
-            # 'Bid Price Level 5', 'Bid Volume Level 5', 
-            # 'Bid Price Level 6', 'Bid Volume Level 6', 
-            # 'Bid Price Level 7', 'Bid Volume Level 7',
-            # 'Bid Price Level 8', 'Bid Volume Level 8', 
-            # 'Bid Price Level 9', 'Bid Volume Level 9', 
-            # 'Bid Price Level 10', 'Bid Volume Level 10',
-            'Ask Price Level 1', 'Ask Volume Level 1', 
-            'Ask Price Level 2', 'Ask Volume Level 2', 
-            'Ask Price Level 3', 'Ask Volume Level 3',
-            # 'Ask Price Level 4', 'Ask Volume Level 4', 
-            # 'Ask Price Level 5','Ask Volume Level 5', 
-            # 'Ask Price Level 6', 'Ask Volume Level 6',
-            # 'Ask Price Level 7', 'Ask Volume Level 7', 
-            # 'Ask Price Level 8', 'Ask Volume Level 8', 
-            # 'Ask Price Level 9', 'Ask Volume Level 9',
-            # 'Ask Price Level 10', 'Ask Volume Level 10', 
-            'Volume of 10 Bid Value', 'Volume of 10 Ask Value',
-            # 'Volume of 10 Bid Ask Mid Value',
-            'Volume of 10 Bid Ask Mid Value Spread',
-            'Volume of 10 Bid Ask Mid Value Velocity',
-            'Volume of 10 Bid Ask Mid Value Acceleration', 
-            'Bid Volume Level 1 Log',
-            'Bid Volume Level 2 Log', 
-            'Bid Volume Level 3 Log',
-            'Bid Volume Level 4 Log', 
+            # 'Mid Price', 
+            
+            'Bid Ask Spread',
+            f'Bid Market Depth {self.buy_amount}',
+            f'Ask Market Depth {self.buy_amount}',
+            
+            'Bid Volume Level 1','Bid Volume Level 2','Bid Volume Level 3',
+            # 'Bid Volume Level 4',
+            # 'Bid Volume Level 5','Bid Volume Level 6','Bid Volume Level 7', 'Bid Volume Level 8',
+            # 'Bid Volume Level 9','Bid Volume Level 10',
+            
+            'Ask Volume Level 1','Ask Volume Level 2','Ask Volume Level 3', 
+            # 'Ask Volume Level 4',
+            # 'Ask Volume Level 5','Ask Volume Level 6','Ask Volume Level 7', 'Ask Volume Level 8',
+            # 'Ask Volume Level 9','Ask Volume Level 10',
+
+            'Bid Price Level 1','Bid Price Level 2','Bid Price Level 3', 
+            # 'Bid Price Level 4',
+            # 'Bid Price Level 5','Bid Price Level 6','Bid Price Level 7', 'Bid Price Level 8',
+            # 'Bid Price Level 9','Bid Price Level 10',
+            
+            'Ask Price Level 1','Ask Price Level 2','Ask Price Level 3', 
+            # 'Ask Price Level 4',
+            # 'Ask Price Level 5','Ask Price Level 6','Ask Price Level 7', 'Ask Price Level 8',
+            # 'Ask Price Level 9','Ask Price Level 10',
+            
+            'Bid Volume Level 1 Log','Bid Volume Level 2 Log','Bid Volume Level 3 Log', 'Bid Volume Level 4 Log',
             'Bid Volume Level 5 Log',
-            'Bid Volume Level 6 Log',
-            'Bid Volume Level 7 Log', 
-            # 'Bid Volume Level 8 Log',
-            # 'Bid Volume Level 9 Log', 
-            # 'Bid Volume Level 10 Log',
-            'Ask Volume Level 1 Log', 
-            'Ask Volume Level 2 Log',
-            'Ask Volume Level 3 Log', 
-            'Ask Volume Level 4 Log',
-            'Ask Volume Level 5 Log', 
-            'Ask Volume Level 6 Log',
-            'Ask Volume Level 7 Log', 
-            # 'Ask Volume Level 8 Log',
-            # 'Ask Volume Level 9 Log', 
-            # 'Ask Volume Level 10 Log',
-            'Bid Volume Diff 1', 'Bid Volume Diff 2', 'Bid Volume Diff 3',
+            # 'Bid Volume Level 6 Log','Bid Volume Level 7 Log', 'Bid Volume Level 8 Log',
+            # 'Bid Volume Level 9 Log','Bid Volume Level 10 Log',
+            
+            'Ask Volume Level 1 Log','Ask Volume Level 2 Log','Ask Volume Level 3 Log', 'Ask Volume Level 4 Log',
+            'Ask Volume Level 5 Log',
+            # 'Ask Volume Level 6 Log','Ask Volume Level 7 Log', 'Ask Volume Level 8 Log',
+            # 'Ask Volume Level 9 Log','Ask Volume Level 10 Log',
+            
+            # 'Bid Volume Diff 1', 'Bid Volume Diff 2', 'Bid Volume Diff 3',
             # 'Bid Volume Diff 4', 'Bid Volume Diff 5', 'Bid Volume Diff 6',
             # 'Bid Volume Diff 7', 'Bid Volume Diff 8', 'Bid Volume Diff 9',
-            'Ask Volume Diff 1', 'Ask Volume Diff 2', 'Ask Volume Diff 3',
+            
+            # 'Ask Volume Diff 1', 'Ask Volume Diff 2', 'Ask Volume Diff 3',
             # 'Ask Volume Diff 4', 'Ask Volume Diff 5', 'Ask Volume Diff 6',
             # 'Ask Volume Diff 7', 'Ask Volume Diff 8', 'Ask Volume Diff 9',
-            'Imbalance', 
-            'Bid VWAP 10', 'Ask VWAP 10', 
-            'Total Bid Volume 10', 'Total Ask Volume 10', 
-            'Price Range', 
+            
+            'Imbalance',
+            f"Bid VWAP {self.price_level_num} Log",
+            f"Bid VWAP {self.price_level_num} Log",
+            'Mid Price Velocity',
+            # 'Mid Price Acceleration',
             'Time Since Last Update',
-            'Volume of 10 Bid Ask Mid Value Volatility 2', 
-            'Volume of 10 Bid Ask Mid Value Volatility 5',
-            'Volume of 10 Bid Ask Mid Value Volatility 10', 
-            # 'Volume of 10 Bid Ask Mid Value SMA 1',
-            # 'Volume of 10 Bid Ask Mid Value SMA 2',
-            # 'Volume of 10 Bid Ask Mid Value SMA 5',
-            'Volume of 10 Bid Ask Mid Value SMA 10',
-            # 'Volume of 10 Bid Ask Mid Value ROC',
-            # 'Volume of 10 Bid Ask Mid Value EMA 1',
-            # 'Volume of 10 Bid Ask Mid Value EMA 2',
-            # 'Volume of 10 Bid Ask Mid Value EMA 5',
-            # 'Volume of 10 Bid Ask Mid Value EMA 10',
-            # 'Volume of 10 Bid Ask Mid Value RSI',
+            'Bid VWAP 10',
+            'Ask VWAP 10', 
+            # 'Total Bid Volume 10',
+            # 'Total Ask Volume 10', 
+            'Price Range', 
+            "Mid Price Volatility 2","Mid Price Volatility 5","Mid Price Volatility 10",
+        # 'Mid Price SMA 1', 'Mid Price SMA 2', 'Mid Price SMA 5','Mid Price SMA 10',
+            'Mid Price ROC',
+        # 'Mid Price EMA 1', 'Mid Price EMA 2', 'Mid Price EMA 5', 'Mid Price EMA 10',
+            'Mid Price RSI',
         ]
 
         self.historical_inference_vectors = pd.concat([self.historical_inference_vectors,inf_df], ignore_index= True)
@@ -132,8 +125,7 @@ class BinaryClassifier:
 
     def time_independent_features(self,df, price_level_num, buy_amount):
 
-        # Get Size of buy amount
-        def get_volume_of_value(side, df):
+        def get_market_depth_of_value(side, df):
             total_value = 0
             total_volume = 0
             curr_level = 1
@@ -152,70 +144,85 @@ class BinaryClassifier:
                 curr_level +=1
 
             return total_volume
-            
-        df[f"Volume of {buy_amount} Bid Value"] = df.apply(lambda row: get_volume_of_value("Bid", row), axis = 1)
-        df[f"Volume of {buy_amount} Ask Value"] = df.apply(lambda row: get_volume_of_value("Ask", row), axis = 1)
+        
+        
+        df[f"Bid Market Depth {buy_amount}"] = df.apply(lambda row: get_market_depth_of_value("Bid", row), axis = 1)
+        
+        df[f"Ask Market Depth {buy_amount}"] = df.apply(lambda row: get_market_depth_of_value("Ask", row), axis = 1)
+        
+        df[f"Mid Market Depth {buy_amount}"] = (df[f"Bid Market Depth {buy_amount}"] + df[f"Ask Market Depth {buy_amount}"]) / 2
 
-                
-        df[f"Volume of {buy_amount} Bid Ask Mid Value"] = (df[f"Volume of {buy_amount} Bid Value"] + df[f"Volume of {buy_amount} Ask Value"]) / 2
 
-        df[f"Volume of {buy_amount} Bid Ask Mid Value Spread"] = (df[f"Volume of {buy_amount} Bid Value"] - df[f"Volume of {buy_amount} Ask Value"])
+        # Mid Price
+        df["Mid Price"] = (df["Bid Price Level 1"] + df["Ask Price Level 1"]) / 2
 
-        if len(self.historical_inference_vectors) > 0:
-            df[f"Volume of {buy_amount} Bid Ask Mid Value Velocity"] =  df[f"Volume of {buy_amount} Bid Ask Mid Value"] - self.historical_inference_vectors.iloc[-1][f"Volume of {buy_amount} Bid Ask Mid Value"] #df[f"Volume of {buy_amount} Bid Ask Mid Value"].shift(1)
+        # Mid Price Velocity
+        if len(self.historical_inference_vectors) < 1:
+            df["Mid Price Velocity"] = np.nan
         else:
-            df[f"Volume of {buy_amount} Bid Ask Mid Value Velocity"] = np.nan
+            df["Mid Price Velocity"] = df["Mid Price"] - self.historical_inference_vectors.iloc[-1]["Mid Price"]
 
-        if len(self.historical_inference_vectors) > 1:
-            df[f"Volume of {buy_amount} Bid Ask Mid Value Acceleration"] =  df[f"Volume of {buy_amount} Bid Ask Mid Value Velocity"] - self.historical_inference_vectors.iloc[-1][f"Volume of {buy_amount} Bid Ask Mid Value Velocity"]
+        # Mid Price Acceleration
+        if len(self.historical_inference_vectors) < 2:
+            df["Mid Price Acceleration"] = np.nan
         else:
-            df[f"Volume of {buy_amount} Bid Ask Mid Value Acceleration"] = np.nan
-
-
-            # Volume Level Log Bid & Ask
+            df["Mid Price Acceleration"] = df["Mid Price Velocity"] - self.historical_inference_vectors.iloc[-1]["Mid Price Velocity"]
+        
+        # Bid Ask Spread
+        df["Bid Ask Spread"] = (df["Bid Price Level 1"] - df["Ask Price Level 1"])
+        
+        # Volume Level Log Bid & Ask
         for i in range(price_level_num):
             df[f"Bid Volume Level {i+1} Log"] = np.log(df[f"Bid Volume Level {i+1}"])
         for i in range(price_level_num):
             df[f"Ask Volume Level {i+1} Log"] = np.log(df[f"Ask Volume Level {i+1}"])
+        
         # Volume Level Difference Bid & Ask
         for i in range(1,price_level_num):
             df[f'Bid Volume Diff {i}'] = df[f'Bid Volume Level {i+1}'] - df[f'Bid Volume Level {i}']
         for i in range(1,price_level_num):
             df[f'Ask Volume Diff {i}'] = df[f'Ask Volume Level {i+1}'] - df[f'Ask Volume Level {i}']
+        
         # Imbalance
         df["Imbalance"] = (df["Bid Volume Level 1"] - df["Ask Volume Level 1"]) / (df["Bid Volume Level 1"] + df["Ask Volume Level 1"])
+        
         # VWAP Bid & Ask
         def vwap_helper(df, side, levels):
             total_volume = sum(df[[f"{side} Volume Level {i}" for i in range(1,levels+1)]])
             vwap = sum(df[f'{side} Price Level {i}'] * df[f'{side} Volume Level {i}'] for i in range(1, levels+1)) / total_volume
             return vwap
+        
         df[f"Bid VWAP {price_level_num}"] = df.apply(lambda row: vwap_helper(row, "Bid", price_level_num), axis = 1)
+        
         df[f"Ask VWAP {price_level_num}"] = df.apply(lambda row: vwap_helper(row, "Ask", price_level_num), axis = 1)
+        
+        # VWAP Log Bid & Ask
+        df[f"Bid VWAP {price_level_num} Log"] = np.log(df[f"Bid VWAP {price_level_num}"])
+        df[f"Ask VWAP {price_level_num} Log"] = np.log(df[f"Ask VWAP {price_level_num}"])
+        
         # Total Volume Bid & Ask
         df[f"Total Bid Volume {price_level_num}"] = df[[f'Bid Volume Level {i}' for i in range(1, price_level_num+1)]].sum(axis=1)
         df[f"Total Ask Volume {price_level_num}"] = df[[f'Ask Volume Level {i}' for i in range(1, price_level_num+1)]].sum(axis=1)
+        
         # Price Range
         df["Price Range"] = df[f"Ask Price Level {price_level_num}"] - df[f"Bid Price Level {price_level_num}"]
+        
         # Time Difference
         df['Timestamp'] = pd.to_datetime(df['Timestamp'],format='ISO8601')
-        if len(self.historical_inference_vectors) >= 1:
-            df['Time Since Last Update'] = (df['Timestamp'] - self.historical_inference_vectors.iloc[-1]["Timestamp"]).dt.total_seconds()
-        else:
+        if len(self.historical_inference_vectors) < 1:
             df['Time Since Last Update'] = np.nan
+        else:
+            df['Time Since Last Update'] = (df['Timestamp'] - self.historical_inference_vectors.iloc[-1]["Timestamp"]).dt.total_seconds()
 
 
         return df
 
 
-
-
-
-
-    def time_dependent_features(self, df, windows, buy_amount):
+    def time_dependent_features(self, df, windows, buy_amount, column_name):
 
         temp_df = pd.concat([self.historical_inference_vectors, df], ignore_index = True)
 
-        series = temp_df[f"Volume of {buy_amount} Bid Ask Mid Value"]
+        series = temp_df[column_name]
                 
         # Mid Price Volatility Calculation
         def volatility_helper(series, window):
@@ -227,7 +234,7 @@ class BinaryClassifier:
         for window in windows:
             if window == 1:
                 continue
-            df[f"Volume of {buy_amount} Bid Ask Mid Value Volatility {window}"] = volatility_helper(series, window)
+            df[f"{column_name} Volatility {window}"] = volatility_helper(series, window)
 
         
 
@@ -239,7 +246,7 @@ class BinaryClassifier:
             return sum(series.tail(window)) / window
         
         for window in windows:
-            df[f"Volume of {buy_amount} Bid Ask Mid Value SMA {window}"] = create_sma_helper(series, window)
+            df[f"{column_name} SMA {window}"] = create_sma_helper(series, window)
 
 
         
@@ -250,7 +257,7 @@ class BinaryClassifier:
             return (series.iloc[-1] - series.iloc[-2]) / (series.iloc[-2])
         
 
-        df[f"Volume of {buy_amount} Bid Ask Mid Value ROC"] = create_rate_of_change_helper(series)
+        df[f"{column_name} ROC"] = create_rate_of_change_helper(series)
 
 
         
@@ -258,16 +265,16 @@ class BinaryClassifier:
             alpha = 2 / (window+1)
             ema = [None]*len(series)
             if len(self.historical_inference_vectors) == 0:
-                ema[0] = df[f"Volume of {buy_amount} Bid Ask Mid Value"]
+                ema[0] = df[column_name]
             else:
-                ema[0] = self.historical_inference_vectors.iloc[-1][f"Volume of {buy_amount} Bid Ask Mid Value"]
+                ema[0] = self.historical_inference_vectors.iloc[-1][f"{column_name} EMA {window}"]
 
             for i in range(1, len(series)):
                 ema[i] = (alpha * series[i] + (1-alpha) * ema[i-1])
             return ema[-1]
         
         for window in windows:
-            df[f"Volume of {buy_amount} Bid Ask Mid Value EMA {window}"] = create_ema_helper(series, window)
+            df[f"{column_name} EMA {window}"] = create_ema_helper(series, window)
 
 
         
@@ -294,7 +301,7 @@ class BinaryClassifier:
             
             return rsi
         
-        df[f"Volume of {buy_amount} Bid Ask Mid Value RSI"] = create_rsi_helper(series = series, window=14)
+        df[f"{column_name} RSI"] = create_rsi_helper(series = series, window=14)
 
 
         return df
