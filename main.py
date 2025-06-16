@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
     filename_scaler = "3_update_lag_xgbclassifier2_scaler.pkl"
     with open(filename_scaler, "rb") as file:
-        loaded_scaler = joblib.load(filename_scaler)
+        loaded_scaler = joblib.load(file)
 
     price_level_num = 10
     historical_inference_max_length = 200
